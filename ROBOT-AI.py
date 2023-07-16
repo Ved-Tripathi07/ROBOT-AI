@@ -15,14 +15,17 @@ voices= engine.getProperty('voices') #getting details of current voice
 engine.setProperty('voice', voices[0].id)
 
 
-# this function is for speaking anything
+''' this function is for speaking 
+         what you have told to the ROBO '''
 
 def speak(audio):
     engine.say(audio) 
     engine.runAndWait() 
 
 
-# this function wishes you 
+''' this function wishes you and 
+    introduces the AI named ROBOT '''
+
 def wishMe():
     hour = int(datetime.datetime.now().hour)
     if hour>=0 and hour<12:
@@ -36,13 +39,18 @@ def wishMe():
 
     speak(" I am Robot, Speed 1 terahertz, memory 1 zeta byte. ")
     speak("How may I help you ! ")
+    speak("please say stop when you done your task")
 
+''' this function takes the command from the user
+     and gives the related output '''
 
 def takeCommand():
     r= sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
+        r.pause_threshold = 1
         audio= r.listen(source)
+        
 
     try:
         print("Recoznizing...")
@@ -53,19 +61,30 @@ def takeCommand():
         print("Master Please speak again...")
         speak("Master I am sorry! I am not able to understand what you have said. Please speak again...")
         return "None"
-    return query
+    
+    return query  
+
+
+
+''' the main function starts 
+        from here '''
 
 
 if __name__=="__main__" :
 
     wishMe()
-    # speak("Code With Harry")
+
+    
     while True:
+
         query = takeCommand().lower()
 
         if "thank you" in query:
             speak("Welcome Master ")
             speak("I will be very happy to assist you again")
+
+
+            # Searching anything from wikipedia
 
         elif "wikipedia" in query:
 
@@ -76,6 +95,8 @@ if __name__=="__main__" :
             print(results)
             speak(results)
         
+
+            # openning youtube
 
         elif "open youtube" in query:
 
@@ -95,12 +116,15 @@ if __name__=="__main__" :
             codePath = "C:\\Users\\theve\AppData\\Local\Programs\\Microsoft VS Code\\Code.exe"
             os.startfile(codePath)
 
+
+        # This function will give you the current time
+
         elif 'time' in query:
 
             speak("Collecting current time...")
             strTime = datetime.datetime.now().strftime("%H:%M:%S")    
             speak(f"Master, the time is {strTime}")
 
-        elif 'mother' in query:
-            speak(" yes Priyajeet is a Mother fucker")
-        
+
+        elif 'stop':
+            break
